@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# secrets and personal data — never commit; document new variables in .env.example instead
+.env
+.env.*
+!.env.example
+profile.txt
+
+# written by scripts
+selftest-shot.png
+
+# whisper/ python service
+__pycache__/
+*.pyc
+
+# npm noise
+npm-debug.log*
+
+# Windows folder junk
+Thumbs.db
+desktop.ini

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="options.css" />
+<style>
+/* preview chrome only - not part of the component */
+:root { color-scheme: light; }
+html, body { margin: 0; background: var(--color-paper-2); overflow-x: clip; }
+body { font: 400 var(--text-md) / 1.5 var(--font-body); color: var(--color-ink-2); padding: var(--space-md); }
+:focus { outline: none; }
+.page { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-sm); }
+h1 { margin: 0; font: 600 var(--text-base) / 1.2 var(--font-display); color: var(--color-ink); }
+.note { margin: 0; font: 400 var(--text-label) / 1.5 var(--font-mono); color: var(--color-muted); }
+.row { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--space-sm); align-items: center; }
+.tag { font: 600 var(--text-label) / 1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-muted); }
+.frame { border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-card); background: var(--color-paper); overflow: hidden; }
+.frame .opts { border-bottom: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Options bar — 8 states</h1>
+  <p class="note">Disposable. Open once, then delete. Live UI reaches these through :hover / :focus-visible / :active / [aria-pressed] / [disabled] / .is-loading / .is-error / .lvl.ok.</p>
+
+  <div class="row"><span class="tag">default</span><div class="frame">
+    <div class="opts">
+      <div class="opts-group"><span class="opts-label">Mic</span><button class="opt standalone" aria-pressed="true">Mic<span class="lvl" aria-hidden="true"></span></button></div>
+      <div class="opts-group"><span class="opts-label">Auto</span><div class="seg"><button class="opt" aria-pressed="true">Off</button><button class="opt">3s</button><button class="opt">5s</button><button class="opt">10s</button></div></div>
+      <div class="opts-group"><span class="opts-label">Len</span><div class="seg"><button class="opt">Brief</button><button class="opt" aria-pressed="true">Normal</button><button class="opt">Deep</button></div></div>
+    </div>
+  </div></div>
+
+  <div class="row"><span class="tag">hover</span><div class="frame">
+    <div class="opts">
+      <div class="opts-group"><span class="opts-label">Mic</span><button class="opt standalone is-hover" aria-pressed="true">Mic<span class="lvl" aria-hidden="true"></span></button></div>
+      <div class="opts-group"><span class="opts-label">Auto</span><div class="seg"><button class="opt" aria-pressed="true">Off</button><button class="opt is-hover">3s</button><button class="opt">5s</button><button class="opt">10s</button></div></div>
+      <div class="opts-group"><span class="opts-label">Len</span><div class="seg"><button class="opt">Brief</button><button class="opt" aria-pressed="true">Normal</button><button class="opt is-hover">Deep</button></div></div>
+    </div>
+  </div></div>
+
+  <div class="row"><span class="tag">focus</span><div class="frame">
+    <div class="opts">
+      <div class="opts-group"><span class="opts-label">Mic</span><button class="opt standalone" aria-pressed="true">Mic<span class="lvl" aria-hidden="true"></span></button></div>
+      <div class="opts-group"><span class="opts-label">Auto</span><div class="seg"><button class="opt" aria-pressed="true">Off</button><button class="opt is-focus">3s</button><button class="opt">5s</button><button class="opt">10s</button></div></div>
+      <div class="opts-group"><span class="opts-label">Len</span><div class="seg"><button class="opt">Brief</button><button class="opt" aria-pressed="true">Normal</button><button class="opt">Deep</button></div></div>
+    </div>
+  </div></div>
+
+  <div class="row"><span class="tag">active</span><div class="frame">
+    <div class="opts">
+      <div class="opts-group"><span class="opts-label">Mic</span><button class="opt standalone is-active" aria-pressed="true">Mic<span class="lvl" aria-hidden="true"></span></button></div>
+      <div class="opts-group"><span class="opts-label">Auto</span><div class="seg"><button class="opt" aria-pressed="true">Off</button><button class="opt">3s</button><button class="opt is-active">5s</button><button class="opt">10s</button></div></div>
+      <div class="opts-group"><span class="opts-label">Len</span><div class="seg"><button class="opt">Brief</button><button class="opt" aria-pressed="true">Normal</button><button class="opt">Deep</button></div></div>
+    </div>
+  </div></div>
+
+  <div class="row"><span class="tag">disabled</span><div class="frame">
+    <div class="opts">
+      <div class="opts-group"><span class="opts-label">Mic</span><button class="opt standalone" disabled>Mic<span class="lvl" aria-hidden="true"></span></button></div>
+      <div class="opts-group"><span class="opts-label">Auto</span><div class="seg"><button class="opt" disabled aria-pressed="true">Off</button><button class="opt" disabled>3s</button><button class="opt" disabled>5s</button><button class="opt" disabled>10s</button></div></div>
+      <div class="opts-group"><span class="opts-label">Len</span><div class="seg"><button class="opt" disabled>Brief</button><button class="opt" disabled aria-pressed="true">Normal</button><button class="opt" disabled>Deep</button></div></div>
+    </div>
+  </div></div>
+
+  <div class="row"><span class="tag">loading</span><div class="frame">
+    <div class="opts is-loading">
+      <div class="opts-group"><span class="opts-label">Mic</span><button class="opt standalone" aria-pressed="true">Mic<span class="lvl" aria-hidden="true"></span></button></div>
+      <div class="opts-group"><span class="opts-label">Auto</span><div class="seg"><button class="opt" aria-pressed="true">Off</button><button class="opt">3s</button><button class="opt">5s</button><button class="opt">10s</button></div></div>
+      <div class="opts-group"><span class="opts-label">Len</span><div class="seg"><button class="opt">Brief</button><button class="opt">Normal</button><button class="opt" aria-pressed="true">Deep</button></div></div>
+    </div>
+  </div></div>
+
+  <div class="row"><span class="tag">error</span><div class="frame">
+    <div class="opts">
+      <div class="opts-group"><span class="opts-label">Mic</span><button class="opt standalone is-error" disabled>Mic<span class="lvl" aria-hidden="true"></span></button></div>
+      <div class="opts-group"><span class="opts-label">Auto</span><div class="seg"><button class="opt" aria-pressed="true">Off</button><button class="opt">3s</button><button class="opt">5s</button><button class="opt">10s</button></div></div>
+      <div class="opts-group"><span class="opts-label">Len</span><div class="seg"><button class="opt">Brief</button><button class="opt" aria-pressed="true">Normal</button><button class="opt">Deep</button></div></div>
+    </div>
+  </div></div>
+
+  <div class="row"><span class="tag">success</span><div class="frame">
+    <div class="opts">
+      <div class="opts-group"><span class="opts-label">Mic</span><button class="opt standalone" aria-pressed="true">Mic<span class="lvl ok" aria-hidden="true"></span></button></div>
+      <div class="opts-group"><span class="opts-label">Auto</span><div class="seg"><button class="opt">Off</button><button class="opt" aria-pressed="true">3s</button><button class="opt">5s</button><button class="opt">10s</button></div></div>
+      <div class="opts-group"><span class="opts-label">Len</span><div class="seg"><button class="opt">Brief</button><button class="opt" aria-pressed="true">Normal</button><button class="opt">Deep</button></div></div>
+    </div>
+  </div></div>
+
+  <p class="note">success = mic live (level dot ok) + an interval armed. error/disabled = getUserMedia failed or was denied.</p>
+</div>
+</body>
+</html>

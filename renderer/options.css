@@ -1,0 +1,53 @@
+/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V5 */
+/* Hallmark · component: option-bar · genre: modern-minimal · theme: cobalt
+ * states: default · hover · focus · active · disabled · loading · error · success
+ * contrast: pass (46–50) · every value below is a token from tokens.css
+ */
+.opts {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-sm);
+  flex: none; padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+}
+.opts-group { display: flex; align-items: center; gap: var(--space-2xs); min-width: 0; }
+.opts-label {
+  font: 600 var(--text-label) / 1 var(--font-mono); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-muted);
+}
+.seg {
+  display: flex; align-items: stretch; overflow: hidden;
+  border: var(--rule-hair) solid var(--color-rule-2);
+  border-radius: var(--radius-control); background: var(--color-paper);
+}
+.opt {
+  cursor: pointer; padding: var(--space-2xs) var(--space-xs); border: 0;
+  background: transparent; color: var(--color-ink-2); white-space: nowrap;
+  font: 600 var(--text-label) / 1.2 var(--font-body);
+  transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+.seg .opt + .opt { border-left: var(--rule-hair) solid var(--color-rule); }
+/* standalone controls (mic) carry their own border instead of a segment frame */
+.opt.standalone {
+  display: inline-flex; align-items: center;
+  border: var(--rule-hair) solid var(--color-rule-2);
+  border-radius: var(--radius-control); background: var(--color-paper);
+}
+.opt:hover, .opt.is-hover { background: var(--color-paper-2); }
+.opt:active, .opt.is-active { transform: translateY(1px); }
+.opt[aria-pressed="true"], .opt.is-on { background: var(--color-paper-3); color: var(--color-ink); }
+/* ring drawn inside: segment frames clip their overflow */
+.opt:focus-visible, .opt.is-focus { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.opt[disabled] { opacity: 0.55; cursor: not-allowed; }
+.opt.is-error { color: var(--color-err); border-color: var(--color-err); }
+/* loading = an ask is in flight: the whole bar stops accepting input */
+.opts.is-loading { cursor: progress; }
+.opts.is-loading .opt { pointer-events: none; opacity: 0.8; }
+.lvl {
+  width: 6px; height: 6px; border-radius: 50%; flex: none;
+  display: inline-block; margin-left: var(--space-2xs); background: var(--color-neutral);
+}
+.lvl.ok { background: var(--color-ok); }
+
+@media (prefers-reduced-motion: reduce) {
+  .opt { transition-duration: 150ms !important; }
+  .opt:active, .opt.is-active { transform: none; }
+}

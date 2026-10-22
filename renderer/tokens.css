@@ -1,0 +1,122 @@
+/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V4 */
+/* Hallmark · macrostructure: Workbench (app family) · tone: austere-technical · anchor hue: cobalt 256
+ * genre: modern-minimal · theme: cobalt (catalog) · enrichment: none
+ * nav: N5 adapted (the pill IS the overlay surface) · footer: Ft2 voice + C4 action bar
+ * theme axes: paper light (L 98.5%) · display grotesk-sans (Space Grotesk) · accent cool cobalt (hue 256)
+ * fonts: Space Grotesk / Inter / JetBrains Mono vendored as woff2 in renderer/fonts/ — the
+ *   overlay never fetches fonts at runtime (offline-safe, instant first paint).
+ * slop: contrast pass (40–41) · nav/footer pass (42–43) · honest pass (46) · chrome pass (47)
+ *   · tokens pass (48) · responsive pass (49) · icons pass (30) · mobile pass (34, 49–57)
+ * first Hallmark run in this project: no prior macrostructure or theme to differ from.
+ */
+
+/* ---- Space Grotesk 600 · Inter 400/600 · JetBrains Mono 400/600 (vendored, latin) ---- */
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/space-grotesk-latin-600.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/inter-latin-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/inter-latin-ext-400.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/inter-latin-600.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/inter-latin-ext-600.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/jetbrains-mono-latin-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/jetbrains-mono-latin-600.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* paper + ink — cool engineered near-white, hue 250–258 */
+  --color-paper: oklch(98.5% 0.004 250);
+  --color-paper-2: oklch(96.5% 0.005 252);
+  --color-paper-3: oklch(94% 0.006 252);
+  --color-rule: oklch(91% 0.008 252);
+  --color-rule-2: oklch(84% 0.010 254);
+  --color-neutral: oklch(58% 0.012 255);
+  --color-muted: oklch(45% 0.014 256);
+  --color-ink-2: oklch(34% 0.018 257);
+  --color-ink: oklch(24% 0.020 258);
+
+  /* the one dark beat — the script surface */
+  --color-graphite: oklch(22% 0.016 260);
+  --color-graphite-2: oklch(28% 0.016 260);
+  --color-graphite-ink: oklch(92% 0.008 250);
+  --color-graphite-muted: oklch(66% 0.012 255);
+
+  /* signal + status */
+  --color-accent-strong: oklch(48% 0.19 256);   /* text + fill that carries text */
+  --color-accent-strong-2: oklch(42% 0.18 256); /* hover step for the filled CTA */
+  --color-accent-ink: oklch(98.5% 0.004 250);
+  --color-focus: oklch(24% 0.020 258);
+  --color-ok: oklch(58% 0.14 155);
+  --color-warn: oklch(70% 0.14 75);
+  --color-err: oklch(48% 0.19 25);
+
+  /* type — display + body + mono (three families, the ceiling) */
+  --font-display: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", "Consolas", ui-monospace, monospace;
+
+  /* space — 4 pt named scale (steps in use) */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+
+  /* text — five sizes maximum */
+  --text-label: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-md: 0.875rem;
+  --text-base: 1rem;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 120ms;
+
+  --rule-hair: 1px;
+  --radius-control: 6px;
+  --radius-card: 10px;
+}

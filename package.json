@@ -1,0 +1,17 @@
+{
+  "name": "aside",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Minimal Cluely-style overlay: sees your screen, hears system audio, suggests replies. Bring your own AI (Ollama / Gemini / OpenAI-compatible).",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "selftest": "electron . --selftest"
+  },
+  "devDependencies": {
+    "electron": "latest"
+  },
+  "dependencies": {
+    "pdf-parse": "^2.4.5"
+  }
+}

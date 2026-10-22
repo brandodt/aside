@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="options.css" />
+<style>
+/* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V4 */
+/* Hallmark · macrostructure: Workbench (app family) · tone: austere-technical · anchor hue: cobalt 256
+ * genre: modern-minimal · theme: cobalt (catalog) · enrichment: none
+ * nav: N5 adapted (the pill IS the overlay surface) · footer: Ft2 voice + C4 action bar
+ * every colour and font below references a token from tokens.css
+ */
+:root { color-scheme: light; }
+
+html, body { margin: 0; height: 100%; background: transparent; overflow: clip; }
+body { font: 400 var(--text-md) / 1.45 var(--font-body); color: var(--color-ink-2); }
+
+#panel {
+  position: absolute; inset: var(--space-2xs); display: flex; flex-direction: column;
+  background: var(--color-paper); border: var(--rule-hair) solid var(--color-rule-2);
+  border-radius: var(--radius-card); overflow: hidden; /* borders carry depth — no shadow, no blur */
+}
+
+/* ---- status bar: detached-surface language, hairline rule, mono machine readout ---- */
+#bar {
+  -webkit-app-region: drag; display: flex; align-items: center; gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--rule-hair) solid var(--color-rule); user-select: none;
+}
+#dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-neutral); flex: none; }
+#dot.on { background: var(--color-ok); }
+#dot.busy { background: var(--color-warn); }
+#dot.err { background: var(--color-err); }
+#status {
+  flex: 0 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font: 600 var(--text-label) / 1 var(--font-mono); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-ink);
+}
+#hint {
+  flex: 1 1 0; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font: 400 var(--text-label) / 1 var(--font-mono); color: var(--color-muted);
+}
+#ctx-btn {
+  -webkit-app-region: no-drag; cursor: pointer; flex: none; white-space: nowrap;
+  padding: var(--space-2xs) var(--space-sm); border: var(--rule-hair) solid var(--color-rule-2);
+  border-radius: var(--radius-control); background: var(--color-paper-2); color: var(--color-ink-2);
+  font: 600 var(--text-label) / 1.2 var(--font-body);
+  transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+#ctx-btn:hover { background: var(--color-paper-3); }
+#ctx-btn:active { transform: translateY(1px); }
+
+/* ---- script surface: the page's one dark beat ---- */
+#out {
+  flex: 1; min-height: 0; overflow-y: auto; white-space: pre-wrap;
+  margin: var(--space-sm) var(--space-sm) 0; padding: var(--space-md);
+  border-radius: var(--radius-card); background: var(--color-graphite); color: var(--color-graphite-ink);
+  font-size: var(--text-base); line-height: 1.6;
+}
+#out:empty::before {
+  content: "No script yet.\A Press What to say — add your background or resume in Context first so it sounds like you.";
+  display: block; white-space: pre-wrap; color: var(--color-graphite-muted);
+}
+/* an in-flight ask clears #out: do not tell the user to press the button they just pressed */
+#opts.is-loading ~ #out:empty::before { content: "Writing your script…"; }
+#out::-webkit-scrollbar { width: 6px; }
+#out::-webkit-scrollbar-thumb { background: var(--color-graphite-2); border-radius: 3px; }
+
+#err {
+  display: none; padding: var(--space-2xs) var(--space-sm);
+  font: 400 var(--text-label) / 1.5 var(--font-mono); color: var(--color-err);
+}
+
+/* ---- context form ---- */
+#ctx { display: none; flex-direction: column; flex: 1; min-height: 0; padding: var(--space-sm); gap: var(--space-xs); }
+#ctx.open { display: flex; }
+#ctx-scroll {
+  display: flex; flex-direction: column; flex: 1; min-height: 0;
+  gap: var(--space-xs); overflow-y: auto; /* the resume form scrolls; the devices below stay pinned */
+}
+#ctx-label {
+  font: 600 var(--text-label) / 1 var(--font-mono); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-muted);
+}
+#ctx-text {
+  flex: 1; min-height: 4rem; padding: var(--space-sm); border-radius: var(--radius-control);
+  border: var(--rule-hair) solid var(--color-rule-2); /* width never changes across states */
+  outline: 2px solid transparent; outline-offset: 1px; /* reserved slot: no shift on focus */
+  background: var(--color-paper); color: var(--color-ink);
+  font: 400 var(--text-md) / 1.5 var(--font-body);
+  resize: none; /* resize: vertical fights the flex column in a 300px-tall window */
+}
+#ctx-text:hover { background: var(--color-paper-2); }
+#ctx-text:focus { border-color: var(--color-ink-2); }
+#ctx-text:focus-visible { outline-color: var(--color-focus); }
+#ctx-text::placeholder { color: var(--color-muted); }
+#ctx-row { display: flex; gap: var(--space-xs); }
+#ctx-row button {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+  cursor: pointer; white-space: nowrap; padding: var(--space-xs) 0;
+  border-radius: var(--radius-control); border: var(--rule-hair) solid var(--color-rule-2);
+  background: var(--color-paper-2); color: var(--color-ink-2);
+  font: 600 var(--text-sm) / 1.2 var(--font-body);
+  transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+#ctx-row button:hover { background: var(--color-paper-3); }
+#ctx-row button:active { transform: translateY(1px); }
+#ctx-row #ctx-save { border-color: var(--color-accent-strong); color: var(--color-accent-strong); background: var(--color-paper); }
+#ctx-row #ctx-save:hover { background: var(--color-paper-2); }
+#ctx-status {
+  min-height: 1lh; font: 400 var(--text-label) / 1.5 var(--font-mono); color: var(--color-muted);
+}
+
+/* ---- audio devices: native selects, token-styled (hover / focus / disabled) ---- */
+#dev {
+  display: flex; flex-direction: column; gap: var(--space-2xs);
+  padding-top: var(--space-xs); border-top: var(--rule-hair) solid var(--color-rule);
+}
+.dev-row { display: flex; align-items: center; gap: var(--space-xs); }
+.dev-label {
+  flex: none; width: 52px;
+  font: 600 var(--text-label) / 1 var(--font-mono); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-muted);
+}
+.dev-row select {
+  flex: 1; min-width: 0; padding: var(--space-2xs) var(--space-xs);
+  border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-control);
+  background: var(--color-paper); color: var(--color-ink-2);
+  font: 400 var(--text-sm) / 1.4 var(--font-body);
+  outline: 2px solid transparent; outline-offset: 1px; /* reserved slot: no shift on focus */
+}
+.dev-row select:hover { background: var(--color-paper-2); }
+.dev-row select:focus { border-color: var(--color-ink-2); }
+.dev-row select:focus-visible { outline-color: var(--color-focus); }
+.dev-row select:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ---- action bar: hairline above, one solid cobalt CTA ---- */
+#foot { padding: var(--space-sm); border-top: var(--rule-hair) solid var(--color-rule); }
+#ask {
+  width: 100%; padding: var(--space-xs) 0; cursor: pointer;
+  background: var(--color-accent-strong); color: var(--color-accent-ink);
+  border: var(--rule-hair) solid var(--color-accent-strong); border-radius: var(--radius-control);
+  font: 600 var(--text-md) / 1 var(--font-display);
+  transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+#ask:hover:not(:disabled) { background: var(--color-accent-strong-2); border-color: var(--color-accent-strong-2); }
+#ask:active { transform: translateY(1px); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- focus: instant ring, never animated ---- */
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 150ms !important; animation-duration: 150ms !important; }
+  #ctx-btn:active, #ctx-row button:active, #ask:active { transform: none; }
+}
+</style>
+</head>
+<body>
+  <div id="panel">
+    <div id="bar">
+      <div id="dot"></div>
+      <div id="status">starting</div>
+      <div id="hint"></div>
+      <button id="ctx-btn" type="button" title="Your background / resume">Context</button>
+    </div>
+    <div class="opts" id="opts" role="group" aria-label="Answering options">
+      <div class="opts-group">
+        <span class="opts-label">Mic</span>
+        <button id="mic-btn" class="opt standalone" type="button" aria-pressed="true" title="Your microphone - tap to mute">Mic<span id="mic-dot" class="lvl" aria-hidden="true"></span></button>
+      </div>
+      <div class="opts-group" role="radiogroup" aria-label="Auto mode">
+        <span class="opts-label">Auto</span>
+        <div class="seg" id="auto-seg">
+          <button class="opt" type="button" data-auto="0" aria-pressed="true">Off</button>
+          <button class="opt" type="button" data-auto="3000">3s</button>
+          <button class="opt" type="button" data-auto="5000">5s</button>
+          <button class="opt" type="button" data-auto="10000">10s</button>
+        </div>
+      </div>
+      <div class="opts-group" role="radiogroup" aria-label="Answer length">
+        <span class="opts-label">Len</span>
+        <div class="seg" id="len-seg">
+          <button class="opt" type="button" data-len="brief">Brief</button>
+          <button class="opt" type="button" data-len="normal" aria-pressed="true">Normal</button>
+          <button class="opt" type="button" data-len="deep">Deep</button>
+        </div>
+      </div>
+    </div>
+    <div id="out"></div>
+    <div id="err" role="alert"></div>
+    <div id="ctx">
+      <div id="ctx-scroll">
+        <label id="ctx-label" for="ctx-text">Background</label>
+        <textarea id="ctx-text" placeholder="Name, roles, skills, projects — or load a resume."></textarea>
+        <div id="ctx-row">
+          <button id="ctx-load" type="button">Load resume (PDF/TXT)</button>
+          <button id="ctx-save" type="button">Save</button>
+        </div>
+        <div id="ctx-status"></div>
+      </div>
+      <div id="dev">
+        <div class="dev-row"><label class="dev-label" for="mic-dev">Input</label><select id="mic-dev"></select></div>
+        <div class="dev-row"><label class="dev-label" for="out-dev">Output</label><select id="out-dev"></select></div>
+      </div>
+    </div>
+    <div id="foot"><button id="ask" type="button">What to say</button></div>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>
